@@ -107,6 +107,7 @@ func main() {
 	cwd_path := flag.String("cwd_path", getCwd(), "The path to generate the encrypted secrets.")
 	dot_env_enc_file_name := flag.String("dot_env_enc_file_name", ".env-enc.yml", "An optional name for the encrypted yml file.")	
 	save_secret := flag.Bool("save", true, "If set to false, the encrypted secret will be output to stdout.")
+	force_save := flag.Bool("force", false, "If set to true, the encrypted secret will be overriden.")
 
     // Parse command line into the defined flags
     flag.Parse()
@@ -130,6 +131,12 @@ func main() {
 		log.Fatal("A .env.local does not exist. Please create a .env.local file.\n\n")
 	}
 
+	// If the user would like to save an encrypted secret that exists
+	// without specifying the force save flag then send an alert
+	if (*save_secret && path_exists(dot_env_enc_file_path) && !*force_save) {
+		log.Fatal(*dot_env_enc_file_name + " exist. Set the -force flag if you would like to overwrite.\n\n")
+	}
+
 	// Create the kustomization file
 	create_file_with_data(kustomization_file_path, yml)
 
@@ -150,13 +157,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if *save_secret {
-		// Create the .env-enc.yml file
-		create_file_with_data(dot_env_enc_file_path, std_out2)
-
-		// Print a success to the console
-		fmt.Println("Successfully created the encrypted secret: " + *dot_env_enc_file_name)
-	} else {
+	// If the save secret is false then print to the console
+	if !*save_secret {
 		fmt.Print(std_out2)
+		return	
 	}
+	
+	// Create the .env-enc.yml file
+	create_file_with_data(dot_env_enc_file_path, std_out2)
+
+	// Print a success to the console
+	fmt.Println("Successfully created the encrypted secret: " + *dot_env_enc_file_name)
+
 }

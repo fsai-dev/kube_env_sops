@@ -20,7 +20,6 @@ sudo mv kube_env_sops /usr/local/bin
 
 [Releases · e1-io/kube_env_sops · GitHub](https://github.com/e1-io/kube_env_sops/releases)
 
-## 
 
 ## Usage
 
@@ -46,6 +45,9 @@ EOT
 # Generate an encrypted Kubernetes Secret from .env.local using SOPS
 kube_env_sops
 Successfully created the encrypted secret: .env-enc.yml
+
+# If ./.env-enc.yml already exists, use the -force flag to overwrite
+kube_env_sops -force
 
 # Generate an encrypted Kubernetes Secret from .env.local using SOPS
 kube_env_sops -save=false > .env-enc.yml
