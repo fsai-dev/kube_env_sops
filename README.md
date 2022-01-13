@@ -4,6 +4,9 @@ Generate an encrypted Kubernetes Secret from a dotenv file using SOPS
 
 ## Installation
 
+### Requires 
+This package relies on `kubectl` and `sops` being installed and included in your $PATH
+
 ### Download and install from the shell
 
 ```shell

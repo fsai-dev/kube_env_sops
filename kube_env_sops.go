@@ -95,7 +95,7 @@ func exec_command(cwd_path string, name string, args ...string) (string, error) 
 func main() {
 
 	// Ensure that the required commands are installed
-	required_commands := []string{"kubectl", "kustomize", "sops"}
+	required_commands := []string{"kubectl", "sops"}
 	
 	for _, command := range required_commands {
 		if(!command_exists(command)) {
