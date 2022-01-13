@@ -109,9 +109,9 @@ func main() {
 	save_secret := flag.Bool("save", true, "If set to false, the encrypted secret will be output to stdout.")
 	force_save := flag.Bool("force", false, "If set to true, the encrypted secret will be overriden.")
 
-    // Parse command line into the defined flags
-    flag.Parse()
-  	
+	// Parse command line into the defined flags
+	flag.Parse()
+	
 	kustomization_file_path := filepath.Join(*cwd_path, "kustomization.yaml")
 	dot_env_local_file_path := filepath.Join(*cwd_path, ".env.local")	
 	dot_env_dec_file_path := filepath.Join(*cwd_path, ".env-dec.yml")
