@@ -151,7 +151,7 @@ func main() {
 	create_file_with_data(dot_env_dec_file_path, std_out)
 
 	// Execute the sops encryption
-	std_out2, err2 := exec_command(*cwd_path, "sops", "--encrypt", dot_env_dec_file_path)
+	std_out2, err2 := exec_command(*cwd_path, "sops", "--encrypt", "--encrypted-regex", "^(data|stringData)$", dot_env_dec_file_path)
 	
 	if err2 != nil {
 		log.Fatal(err)
