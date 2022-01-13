@@ -10,7 +10,7 @@ This package relies on `kubectl` and `sops` being installed and included in your
 ### Download and install from the shell
 
 ```shell
-URL=https://github.com/e1-io/kube_env_sops/releases/download/v0.01/kube_env_sops-v0.01-$(uname -s)-$(uname -m).tar.gz
+URL=https://github.com/e1-io/kube_env_sops/releases/download/v0.02/kube_env_sops-v0.02-$(uname -s)-$(uname -m).tar.gz
 wget -qO- ${URL} | tar xvz - -C .
 chmod +x kube_env_sops
 sudo mv kube_env_sops /usr/local/bin
