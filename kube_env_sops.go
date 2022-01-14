@@ -113,12 +113,18 @@ func main() {
 	flag.Parse()
 	
 	kustomization_file_path := filepath.Join(*cwd_path, "kustomization.yaml")
+	kustomization_file_path_exists := path_exists(kustomization_file_path)
 	dot_env_local_file_path := filepath.Join(*cwd_path, ".env.local")	
 	dot_env_dec_file_path := filepath.Join(*cwd_path, ".env-dec.yml")
 	dot_env_enc_file_path := filepath.Join(*cwd_path, *dot_env_enc_file_name)
 
+	// If a kustomization file does not exist then we will delete the file
+	if(!kustomization_file_path_exists) {
+		// Delay the removal of the file after main is complete
+		defer remove_file(kustomization_file_path)
+	}
+
 	// Delay the removal of the file after main is complete
-	defer remove_file(kustomization_file_path)
 	defer remove_file(dot_env_dec_file_path)
 
 	// TODO: Print if debug mode
@@ -127,7 +133,7 @@ func main() {
 	// fmt.Println("cwd_path: ", *cwd_path)
 
 	// If the .env.local does not exist
-	if(!path_exists(dot_env_local_file_path)) {
+	if(!path_exists(dot_env_local_file_path) && !kustomization_file_path_exists) {
 		log.Fatal("A .env.local does not exist. Please create a .env.local file.\n\n")
 	}
 
@@ -137,8 +143,11 @@ func main() {
 		log.Fatal(*dot_env_enc_file_name + " exist. Set the -force flag if you would like to overwrite.\n\n")
 	}
 
-	// Create the kustomization file
-	create_file_with_data(kustomization_file_path, yml)
+	// If a kustomization file does not exist then create one
+	if(!kustomization_file_path_exists) {
+		// Create the kustomization file
+		create_file_with_data(kustomization_file_path, yml)
+	}
 
 	// Execute the kustomization
 	std_out, err := exec_command(*cwd_path, "kubectl", "kustomize", *cwd_path)
